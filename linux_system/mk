@@ -1,8 +1,0 @@
-main.out:src/add.o src/sub.o
-	gcc src/add.o src/sub.o main.c -o main.out -I include
-
-src/add.o:src/add.c
-	gcc -c src/add.c -o src/add.o
-
-src/sub.o:src/sub.c
-	gcc -c src/sub.c -o src/sub.o	

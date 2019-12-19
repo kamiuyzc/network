@@ -6,7 +6,7 @@
 int main(void)
 {
     int a, b, sum, r;
-    a = 30;
+    a = 60;
     b = 20;
     sum = add(a, b);
     r = sub(a, b);
