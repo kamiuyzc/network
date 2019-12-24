@@ -8,10 +8,18 @@ int getsum(char *p)
 {
 	int result = 0;
 	int n;
+	int j = 0;
+	int i = 0;
+	char *p1 = p;
 	p = strtok(p, ",");
 
 	while (p != NULL)
 	{
+		for(i = 0;i < 14;i++)
+		{
+			printf("%c",p1[i]);
+		}
+		printf(" %s, %d, %p\n",p, j++, p);
 		result = result + atoi(p);
 		p = strtok(NULL, ",");
 	}
