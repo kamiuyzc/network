@@ -14,15 +14,15 @@ void gen_array(int *array, int n)
 void sort_array(int *array, int n)
 {
 	int tmp;
-    for(int i = 0;i < n - 1;i++)
+	for(int i = 0;i < n -1;i++)
 	{
 		for(int j = i + 1;j < n;j++)
 		{
-		    if (array[i] > array[j])
+		    if(array[i] > array[j])	
 			{
-                tmp = array[i];
+				tmp = array[i];
 				array[i] = array[j];
-				array[j] = tmp; 
+				array[j] = tmp;
 			}
 		}
 	}
