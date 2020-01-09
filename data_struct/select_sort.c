@@ -16,13 +16,13 @@ void sort_array(int *array, int n)
 	int tmp;
     for(int i = 0;i < n - 1;i++)
 	{
-		for(int j = 1;j < n - i;j++)
+		for(int j = i + 1;j < n;j++)
 		{
-		    if (array[i] > array[i + j])
+		    if (array[i] > array[j])
 			{
                 tmp = array[i];
-				array[i] = array[i + j];
-				array[i + j] = tmp; 
+				array[i] = array[j];
+				array[j] = tmp; 
 			}
 		}
 	}
