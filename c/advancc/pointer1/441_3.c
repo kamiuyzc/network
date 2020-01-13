@@ -16,6 +16,7 @@ void mycopy2(char *dst, char *src)
 	{
         *dst++ = *src++;
 	}
+	dst = '\0';
 }
 
 int mycopy3(char *dst, char *src)
@@ -26,6 +27,7 @@ int mycopy3(char *dst, char *src)
 		return -1;
 	}
     while(*dst++ = *src++){}
+	dst = '\0';
 	return 0;
 }
 
