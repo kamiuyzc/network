@@ -21,7 +21,7 @@ int my_sort(char **array1, int num1, char (*array2)[30], int num2, char ***myp3,
 	for(i = 0;i < num1;i++)
 	{
 	    q = (char *)malloc(30);
-	    strcpy(q, array2 + i);
+	    strcpy(q, *(array2 + i));
 		*tmp = q;
 		tmp++;
 	}
