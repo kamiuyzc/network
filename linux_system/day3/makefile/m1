@@ -1,0 +1,17 @@
+ALL:main.out
+
+obj/add.o:src/add.c
+	gcc -c $< -o $@
+
+obj/sub.o:src/sub.c
+	gcc -c $< -o $@
+
+main.out:main.c obj/add.o obj/sub.o
+	gcc $^ -o $@ -I include
+
+clean:
+	-rm -rf obj/add.o
+	-rm -rf obj/sub.o
+	-rm -rf main.out 
+	
+.PHONY:clean
