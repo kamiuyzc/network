@@ -2,18 +2,20 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 int main(int args, char *argv[])
 {
-    int n;
-    char buf[1024];
-	memset(buf, 0, 1024);
-	n = read(STDIN_FILENO, buf, 1024);
+	char *src = argv[1];
+	char *dst = argv[2];
+	int n;
+    n = link(src, dst);
 	if(n == -1)
 	{
-		perror("read error");
+		perror("link error");
 	}
-    printf("%s", buf);
+
+	unlink(src);
 	return 0;
 }
 
