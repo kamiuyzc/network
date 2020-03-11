@@ -1,4 +1,4 @@
-#include "random.h"
+#include "hyzc.h"
 
 void get_radom_array(int *array, int n)
 {
@@ -9,4 +9,10 @@ void get_radom_array(int *array, int n)
 	{
 		array[i] = rand() % 100;
 	}
+}
+
+void sys_err(const char *str, int status)
+{
+	perror(str);
+	exit(status);
 }
