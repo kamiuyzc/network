@@ -12,12 +12,12 @@ int main(int args, char *argv[])
 	
 	sys_err(pid, "fork error\n", 2);
 	if(pid == 0){
+		sleep(2);
 		char *s = "read info test\n";
 		write(fd, s, strlen(s));
 	}
 
 	if(pid > 0){
-		sleep(1);
 		read(fd, buf, 1024);
 		printf("%s\n", buf);
 	}
