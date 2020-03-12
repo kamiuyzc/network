@@ -11,8 +11,10 @@ void get_radom_array(int *array, int n)
 	}
 }
 
-void sys_err(const char *str, int status)
+void sys_err(int rvalue, const char *str, int status)
 {
-	perror(str);
-	exit(status);
+	if(rvalue == -1){
+		perror(str);
+		exit(status);
+	}
 }
