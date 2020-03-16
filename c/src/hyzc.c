@@ -13,7 +13,9 @@ void get_radom_array(int *array, int n)
 
 void sys_err(int rvalue, const char *str, int status)
 {
+	char buf[1024] = {0};
 	if(rvalue == -1){
+		sprintf(buf, "%s error happen\n", str);
 		perror(str);
 		exit(status);
 	}
