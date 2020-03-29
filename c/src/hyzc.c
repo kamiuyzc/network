@@ -20,3 +20,12 @@ void sys_err(int rvalue, const char *str, int status)
 		exit(status);
 	}
 }
+
+void pthread_err(int rvalue, const char *str, int status)
+{
+	char buf[1024] = {0};
+	if(rvalue != 0){
+		fprintf(stderr, "pthread %s error: %s\n",str, strerror(rvalue));
+		exit(status);
+	}
+}
