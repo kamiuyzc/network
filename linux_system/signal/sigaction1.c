@@ -33,7 +33,7 @@ int main(int args, char *argv[])
 	sigaction(SIGQUIT, &new, &old);
 	char buf[1024] = {0};
 	int res = read(0, buf, 100);
-	sys_err(res, "error\n", 1);
+	y_sys_err(res, "error\n", 1);
 	printf("result:%s", buf);
 	return 0;
 }
