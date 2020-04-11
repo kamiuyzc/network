@@ -2,8 +2,15 @@
 #include <strings.h>
 #include <arpa/inet.h>
 #include <ctype.h>
+#include <signal.h>
+#include <sys/wait.h>
 #define IP 127.0.0.1
 #define PORT 8888
+
+void do_sigchild(int signum)
+{
+	while(waitpid(-1, NULL, WNOHANG) > 0);
+}
 
 int main(int args, char *argv[])
 {
@@ -30,6 +37,14 @@ int main(int args, char *argv[])
 
 	Listen(lfd, 512);
 
+	struct sigaction act, oldact;
+	act.sa_handler = do_sigchild;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags= 0;
+	ret = sigaction(SIGCHLD, &act, &oldact);
+	y_sys_err(ret, "sigaction", 1);
+
+
 	while(1){
 		cfd = Accept(lfd, (struct sockaddr *)&clin_addr, &clinaddr_len);
 		printf("client ip : %s\tport : %d\n", inet_ntop(AF_INET, 
@@ -42,10 +57,11 @@ int main(int args, char *argv[])
 		y_sys_err(pid, "fork", 1);	
 		if(pid == 0){
 			close(lfd);
-     		break;
+			break;
 		}
 		else{
 			close(cfd);
+
 			continue;
 		}
 	}
@@ -64,9 +80,6 @@ int main(int args, char *argv[])
 			write(STDOUT_FILENO, buf, ret);
 		}
 	}
-
-
-
 	return 0;
 }
 
