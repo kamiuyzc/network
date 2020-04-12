@@ -1,48 +1,57 @@
 #include "hyzc.h"
 #include <arpa/inet.h>
 #include <ctype.h>
+#include <signal.h>
 #define PORT 8000
+
 
 int main(int args, char *argv[])
 {
-    int sfd, cfd;
-	int res;
-	struct sockaddr_in serv_addr, clit_addr;
-	char buf[BUFSIZ];
-	char clit_ip[32] = {0};
-	socklen_t clit_addr_len;
-	clit_addr_len = sizeof(clit_addr);
+    int lfd, cfd;
+	int opt_val = 1;
+
+	struct sockaddr_in serv_addr, clin_addr;
+	socklen_t clin_addr_len = sizeof(clin_addr);
+	char clin_ip[INET_ADDRSTRLEN];
+	int clin_port;
+
+	int  i;
+	ssize_t res;
+	char wrbuf[BUFSIZ], rdbuf[BUFSIZ];
+    
+	lfd = Socket(AF_INET, SOCK_STREAM, 0);
+	setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, (void *)&opt_val, (socklen_t)sizeof(opt_val));
 
 	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_addr.s_addr = INADDR_ANY;
 	serv_addr.sin_port = htons(PORT);
-	serv_addr.sin_addr.s_addr  = htonl(INADDR_ANY);
 
-	sfd = Socket(AF_INET, SOCK_STREAM, 0);
+    Bind(lfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
-	Bind(sfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
-
-	Listen(sfd, 512);
+    Listen(lfd ,1024);
 
 	while(1){
-		cfd = Accept(sfd, (struct sockaddr *)&clit_addr, &clit_addr_len);
-		
-		printf("client %d %s\n", ntohs(clit_addr.sin_port)
-								,inet_ntop(AF_INET
-									,&clit_addr.sin_addr.s_addr
-									,clit_ip,
-									sizeof(clit_ip)));
+		cfd = Accept(lfd, (struct sockaddr *)&clin_addr, &clin_addr_len);
+		y_getsockaddr(clin_addr, clin_ip, &clin_port);
+		printf("client ip %s port %d connect\n", clin_ip, clin_port);
+        
 		while(1){
-			memset(buf, 0, BUFSIZ);
-		    res = Readn(cfd, buf, 1024 * 5);
-			printf("read len: %d\tinfo:%s\n", buf,res);
-		    Write(cfd, buf, res);
+			bzero(wrbuf, BUFSIZ);
+			bzero(rdbuf, BUFSIZ);
+			res = Read(cfd, rdbuf, BUFSIZ);
+			if(res == 0){
+				break;
+			}
+			printf("read info: %s", rdbuf);
+			for(i = 0;i < res;i++){
+				wrbuf[i] = toupper(rdbuf[i]);
+			}
+			write(cfd, wrbuf, res);
+			printf("write info: %s", wrbuf);
 		}
-		
-		Close(cfd);
+		close(cfd);
+		printf("client ip %s port %d close\n", clin_ip, clin_port);
 	}
-
-	Close(sfd);
-
 	return 0;
 }
 
